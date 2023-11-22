@@ -46,7 +46,7 @@ window.onload = () => {
 
 	sizeTemplate1.addEventListener('change', (event) => {
 		if (sizeTemplate1.checked) {
-			selectRegionContainer.style.display = "block"
+			selectRegionContainer.style.display = "block";
 			saveButtonContainer.style.display = "block";
 
 
@@ -54,7 +54,7 @@ window.onload = () => {
 			height = size["height"];
 			width = size["width"];
 
-			recalculateAcceptZoom(ctx, img)
+			recalculateAcceptZoom(ctx, img);
 			recalculatePosition();
 			drawImage(ctx);
 			drawSelectedArea(ctx);
@@ -62,7 +62,7 @@ window.onload = () => {
 	});
 	sizeTemplate2.addEventListener('change', (event) => {
 		if (sizeTemplate2.checked) {
-			selectRegionContainer.style.display = "block"
+			selectRegionContainer.style.display = "block";
 			saveButtonContainer.style.display = "block";
 
 
@@ -103,7 +103,7 @@ window.onload = () => {
 					drawImage(ctx);
 					drawSelectedArea(ctx);
 
-					selectSizeContainer.style.display = "block"
+					selectSizeContainer.style.display = "block";
 				};
 				img.src = e.target?.result as string;
 			};
@@ -117,10 +117,10 @@ window.onload = () => {
 			return;
 		}
 
-		const minHorizontalScale = width / image.width
-		const minVerticalScale = height / image.height
+		const minHorizontalScale = width / image.width;
+		const minVerticalScale = height / image.height;
 
-		const minScale = Math.max(minHorizontalScale, minVerticalScale)
+		const minScale = Math.max(minHorizontalScale, minVerticalScale);
 		zoomSlider.min = minScale.toString();
 		zoomSlider.value = Math.max(minScale, +zoomSlider.value).toString();
 
@@ -175,9 +175,8 @@ window.onload = () => {
 	zoomSlider.addEventListener('input', () => {
 		scale = +zoomSlider.value;
 		scaleLabel.innerText = Math.round(scale * 100) + "%"
-		console.log(scaleLabel.innerText)
 
-		drawImage(ctx)
+		drawImage(ctx);
 		recalculatePosition();
 		drawSelectedArea(ctx);
 	});
