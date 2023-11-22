@@ -1,47 +1,124 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>パスポート用の画像切り抜きツール</title>
+    <title>パスポート用画像切り抜きツール</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/reset.min.css">
+	<style>
+	body {
+		padding: 32px;
+	}
+	h1 {
+		margin-bottom: 8px;
+	}
+	h2 {
+		margin-top: 32px;
+		margin-bottom: 16px;
+	}
+	p {
+		margin-bottom: 4px;
+	}
+	.radio-button {
+		margin-bottom: 8px;
+	}
+	#zoom-slider {
+		vertical-align: middle;
+	}
+	#save-button-container {
+		margin-bottom: 16px;
+	}
+	#image-canvas {
+		border: 1px solid gray;		
+	}
+	#save-button {
+		margin-top: 16px;
+	}
+	.notice-container {
+		margin-bottom: 16px;
+	}
+	</style>
 </head>
 <body>
 	<h1>パスポート用の画像切り抜きツール</h1>
 	<p>パスポートのオンライン申請に必要となる固定サイズの画像を切り抜いて保存するツールです。</p>
-	<p>すべての処理は、お使いのコンピューター上で実行されます。ネットワークを通じて外部に送信されることはありません。</p>
+	<p>切り抜きは次のステップで行います。</p>
+	<ol>
+		<li>画像を選択</li>
+		<li>切り抜くサイズを選択</li>
+		<li>切り抜く領域を指定</li>
+		<li>指定した範囲を保存</li>
+	</ol>
+	<p>すべての処理は、お使いのコンピューター（ブラウザ）上で実行します。処理する画像をネットワークを通じて外部に送信することはありません。</p>
+	<p>本ウェブサイトでは、利用状況を把握する目的でGoogle社の提供するGoogle Analyticsを利用しています。</p>
 
-	<div>
-		<h2>ステップ1. 切り抜く画像を選択してください</h2>
+	<div id="set-image">
+		<h2>ステップ1. 画像を選択</h2>
 		<input type="file" id="image-input" accept="image/*" />
-		<br />
 	</div>	
-	<div>
-		<h2>ステップ2. 画像の目的（サイズ）を選択してください</h2>
-		<input type="radio" id="size-photo" name="size-template" value="730,600">顔写真（横600px, 縦730px）</input>
-		<input type="radio" id="size-signature" name="size-template" value="284,788">署名（横788px, 縦284px）</input>
-		<br />
+	<div id="select-size-container">
+		<h2>ステップ2. 切り抜くサイズを選択</h2>
+		<div class="radio-button">
+			<input type="radio" id="size-photo" name="size-template" value="730,600"></input>
+			<label for="size-photo">顔写真（横600px, 縦730px）</label>
+		</div>
+		<div class="radio-button">
+			<input type="radio" id="size-signature" name="size-template" value="284,788"></input>
+			<label for="size-signature">署名（横788px, 縦284px）</label>
+		</div>
 	</div>	
-	<div>
-		<h2>ステップ3. 画像を切り抜く領域を選択してください</h2>
-		<p> * スライダーを操作して画像を拡大縮小できます。</p>
-		<label for="zoom-slider">画像のズーム: </label>
-		<input type="range" id="zoom-slider" min="0.1" max="2.0" step="0.005" value="1" />
+	<div id="select-region-container">
+		<h2>ステップ3. 切り抜く領域を指定</h2>
+		<p>ドラッグで切り抜く領域を移動できます。</p>
+		<p>スライダーを操作して画像を拡大・縮小できます。</p>
+
+		<div class="scale-container">
+			<input type="range" id="zoom-slider" min="0.1" max="2.0" step="0.005" value="1" />
+			<label id="label-scale" for="zoom-slider"></label>
+		</div>
 		<br />	
 	</div>
 
 	<div>
-		<canvas id="image-canvas"></canvas>
+		<canvas id="image-canvas" width="0" height="0"></canvas>
 	</div>
 
-	<div>
-		<h2>ステップ4. 指定した範囲を保存してください</h2>
+	<div id="save-button-container">
+		<h2>ステップ4. 指定した範囲を保存</h2>
+		<p>「画像を保存」ボタンを押すと、切り抜いた画像をダウンロードフォルダに保存します。</p>
+		<p>すべての処理は、お使いのコンピューター（ブラウザ）上で実行します。処理する画像をネットワークを通じて外部に送信することはありません。</p>
+
 		<button id="save-button">画像を保存</button>
 		<br />
 	</div>	
 
+	<div class="notice-container">
+		<h2>注意</h2>
+		<p>パスポートのオンライン申請に必要な画像は、サイズ以外にも要件があります。本ツールで正しいサイズで切り抜いても要件を満たさない場合があります。</p>
+		<p>詳細は次のページを参照してください。</p>
+		<ul>
+			<li>
+				Q 国内からオンライン申請する写真館等で撮影した写真データをアップロードしたいです。サイズなどの規定はありますか。 - 外務省 パスポート（旅券）よくあるお問い合わせ<br />
+				<a target="_blank" href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5">https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5</a>
+			</li>
+			<li>
+				オンライン申請における自署画像の注意点 - 外務省 パスポート（旅券）パスポート（旅券）<br />
+				<a target="_blank" href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html">https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html</a>
+			</li>
+		</ul>
+		<p>
+			スマートフォン向けの<a target="_blank" href="https://services.digital.go.jp/mynaportal-app/">マイナポータルアプリ</a>には、写真や署名画像をカメラで撮影して切り抜きをガイドする機能があります。
+		</p>
+	</div>
+
 	<hr />
-	<p>本ツールはオープンソースソフトウェアです。ソースコード等は、次のサイトから入手できます。</p>
-	<p>
-		<a href="https://github.com/keiji">https://github.com/keiji</a>
-	</p>
+
+	<div>
+		<p>本ツールはオープンソースソフトウェアです。ソースコード等は、次のサイトから入手できます。</p>
+		<p>
+			<a target="_blank" href="https://github.com/keiji">https://github.com/keiji</a>
+		</p>
+	</div>
 
 	<script src="./script.js"></script>
 </body>

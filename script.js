@@ -14,19 +14,28 @@ window.onload = function () {
     if (!ctx) {
         throw new Error('Canvas context is not available');
     }
+    var selectRegionContainer = document.getElementById('select-region-container');
+    selectRegionContainer.style.display = "none";
+    var selectSizeContainer = document.getElementById('select-size-container');
+    selectSizeContainer.style.display = "none";
+    var saveButtonContainer = document.getElementById('save-button-container');
+    saveButtonContainer.style.display = "none";
     var inputElement = document.getElementById('image-input');
     var sizeTemplate1 = document.getElementById('size-photo');
     var sizeTemplate2 = document.getElementById('size-signature');
     var zoomSlider = document.getElementById('zoom-slider');
+    var scaleLabel = document.getElementById('label-scale');
     var saveButton = document.getElementById('save-button');
     var width, height;
-    var startX, startY;
-    var centerX, centerY;
+    var startX = 0, startY = 0;
+    var centerX = 0, centerY = 0;
     var scale = 1.0;
     var isDown = false;
     var img = new Image();
     sizeTemplate1.addEventListener('change', function (event) {
         if (sizeTemplate1.checked) {
+            selectRegionContainer.style.display = "block";
+            saveButtonContainer.style.display = "block";
             var size = sizeDict['size-photo'];
             height = size["height"];
             width = size["width"];
@@ -38,6 +47,8 @@ window.onload = function () {
     });
     sizeTemplate2.addEventListener('change', function (event) {
         if (sizeTemplate2.checked) {
+            selectRegionContainer.style.display = "block";
+            saveButtonContainer.style.display = "block";
             var size = sizeDict['size-signature'];
             height = size["height"];
             width = size["width"];
@@ -68,6 +79,7 @@ window.onload = function () {
                     recalculatePosition();
                     drawImage(ctx);
                     drawSelectedArea(ctx);
+                    selectSizeContainer.style.display = "block";
                 };
                 img.src = (_a = e.target) === null || _a === void 0 ? void 0 : _a.result;
             };
@@ -124,6 +136,8 @@ window.onload = function () {
     });
     zoomSlider.addEventListener('input', function () {
         scale = +zoomSlider.value;
+        scaleLabel.innerText = Math.round(scale * 100) + "%";
+        console.log(scaleLabel.innerText);
         drawImage(ctx);
         recalculatePosition();
         drawSelectedArea(ctx);

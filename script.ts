@@ -11,22 +11,33 @@ const sizeDict = {
 
 window.onload = () => {
 	const canvas = document.getElementById('image-canvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext('2d');
 
 	if (!ctx) {
-        throw new Error('Canvas context is not available');
-    }
+		throw new Error('Canvas context is not available');
+	}
 
-    const inputElement = document.getElementById('image-input') as HTMLInputElement;
+	const selectRegionContainer = document.getElementById('select-region-container') as HTMLDivElement;
+	selectRegionContainer.style.display = "none"
+
+	const selectSizeContainer = document.getElementById('select-size-container') as HTMLDivElement;
+	selectSizeContainer.style.display = "none"
+
+	const saveButtonContainer = document.getElementById('save-button-container') as HTMLDivElement;
+	saveButtonContainer.style.display = "none"
+
+	const inputElement = document.getElementById('image-input') as HTMLInputElement;
 	const sizeTemplate1 = document.getElementById('size-photo') as HTMLInputElement;
-    const sizeTemplate2 = document.getElementById('size-signature') as HTMLInputElement;
+	const sizeTemplate2 = document.getElementById('size-signature') as HTMLInputElement;
 
 	const zoomSlider = document.getElementById('zoom-slider') as HTMLInputElement;
-    const saveButton = document.getElementById('save-button') as HTMLButtonElement;
+	const scaleLabel = document.getElementById('label-scale') as HTMLLabelElement;
+
+	const saveButton = document.getElementById('save-button') as HTMLButtonElement;
 
 	let width: number, height: number;
-    let startX: number, startY: number;
-    let centerX: number, centerY: number;
+	let startX: number = 0, startY: number = 0;
+	let centerX: number = 0, centerY: number = 0;
 	let scale: number = 1.0;
 
 	let isDown = false;
@@ -34,7 +45,11 @@ window.onload = () => {
 	const img = new Image();
 
 	sizeTemplate1.addEventListener('change', (event) => {
-		if(sizeTemplate1.checked) {
+		if (sizeTemplate1.checked) {
+			selectRegionContainer.style.display = "block"
+			saveButtonContainer.style.display = "block";
+
+
 			const size = sizeDict['size-photo'];
 			height = size["height"];
 			width = size["width"];
@@ -46,7 +61,11 @@ window.onload = () => {
 		}
 	});
 	sizeTemplate2.addEventListener('change', (event) => {
-		if(sizeTemplate2.checked) {
+		if (sizeTemplate2.checked) {
+			selectRegionContainer.style.display = "block"
+			saveButtonContainer.style.display = "block";
+
+
 			const size = sizeDict['size-signature'];
 			height = size["height"];
 			width = size["width"];
@@ -74,22 +93,24 @@ window.onload = () => {
 
 
 	inputElement.addEventListener('change', (event) => {
-        const files = (event.target as HTMLInputElement).files;
-        if (files && files[0]) {
-            const fileReader = new FileReader();
-            fileReader.onload = (e) => {
-                img.onload = () => {
+		const files = (event.target as HTMLInputElement).files;
+		if (files && files[0]) {
+			const fileReader = new FileReader();
+			fileReader.onload = (e) => {
+				img.onload = () => {
 					recalculateAcceptZoom(ctx, img);
 					recalculatePosition();
 					drawImage(ctx);
 					drawSelectedArea(ctx);
-                };
-                img.src = e.target?.result as string;
-            };
+
+					selectSizeContainer.style.display = "block"
+				};
+				img.src = e.target?.result as string;
+			};
 
 			fileReader.readAsDataURL(files[0]);
-        }
-    });
+		}
+	});
 
 	function recalculateAcceptZoom(ctx: CanvasRenderingContext2D, image: HTMLImageElement) {
 		if (!image) {
@@ -113,82 +134,85 @@ window.onload = () => {
 	canvas.addEventListener('mouseenter', (e) => {
 		drawImage(ctx);
 		drawSelectedArea(ctx);
-    });
+	});
 	canvas.addEventListener('mousedown', (e) => {
-        isDown = true;
-        centerX = e.offsetX;
-        centerY = e.offsetY;
+		isDown = true;
+		centerX = e.offsetX;
+		centerY = e.offsetY;
 
 		drawImage(ctx);
 		recalculatePosition();
 		drawSelectedArea(ctx);
 	});
 
-    canvas.addEventListener('mousemove', (e) => {
-        if (!isDown) {
+	canvas.addEventListener('mousemove', (e) => {
+		if (!isDown) {
 			return;
 		}
-        centerX = e.offsetX;
-        centerY = e.offsetY;
+		centerX = e.offsetX;
+		centerY = e.offsetY;
 
 		drawImage(ctx);
 		recalculatePosition();
 		drawSelectedArea(ctx);
-    });
+	});
 
 	canvas.addEventListener('mouseout', (e) => {
 		drawImage(ctx);
 		drawSelectedArea(ctx);
-    });
+	});
 
 	canvas.addEventListener('mouseup', (e) => {
-        isDown = false;
-        centerX = e.offsetX;
-        centerY = e.offsetY;
+		isDown = false;
+		centerX = e.offsetX;
+		centerY = e.offsetY;
 
 		drawImage(ctx);
 		recalculatePosition();
 		drawSelectedArea(ctx);
-    });
+	});
 
 	zoomSlider.addEventListener('input', () => {
 		scale = +zoomSlider.value;
+		scaleLabel.innerText = Math.round(scale * 100) + "%"
+		console.log(scaleLabel.innerText)
+
 		drawImage(ctx)
 		recalculatePosition();
 		drawSelectedArea(ctx);
-    });
+	});
 
 	function drawImage(ctx: CanvasRenderingContext2D) {
-        if (!img) {
+		if (!img) {
 			return;
 		}
 		canvas.width = img.width * scale;
 		canvas.height = img.height * scale;
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-    }
+	}
 
 	function drawSelectedArea(ctx: CanvasRenderingContext2D) {
-        ctx.strokeStyle = 'red';
-        ctx.strokeRect(startX, startY, width, height);
-    }
+		ctx.strokeStyle = 'red';
+		ctx.strokeRect(startX, startY, width, height);
+	}
 
 	saveButton.addEventListener('click', () => {
-        if (!img.src) return;
-        const outputCanvas = document.createElement('canvas');
-        const outputCtx = outputCanvas.getContext('2d');
-        if (!outputCtx) return;
+		if (!img.src) return;
+		const outputCanvas = document.createElement('canvas');
+		const outputCtx = outputCanvas.getContext('2d');
+		if (!outputCtx) return;
 
-        outputCanvas.width = width;
-        outputCanvas.height = height;
-        outputCtx.drawImage(canvas, startX, startY, width, height, 0, 0, width, height);
+		outputCanvas.width = width;
+		outputCanvas.height = height;
+		outputCtx.drawImage(canvas, startX, startY, width, height, 0, 0, width, height);
 
-        const imageUrl = outputCanvas.toDataURL('image/jpeg');
-        const a = document.createElement('a');
-        a.href = imageUrl;
-        a.download = 'selected-image.jpg';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
+		const imageUrl = outputCanvas.toDataURL('image/jpeg');
+		const a = document.createElement('a');
+		a.href = imageUrl;
+		a.download = 'selected-image.jpg';
+		document.body.appendChild(a);
+		a.click();
+		document.body.removeChild(a);
+	});
 };
