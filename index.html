@@ -1,55 +1,66 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>パスポート用画像切り抜きツール</title>
+	<title>パスポート用画像切り抜きツール</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X8P0WJTQ79"></script>
-    <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-X8P0WJTQ79"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		gtag('js', new Date());
 
-    gtag('config', 'G-X8P0WJTQ79');
+		gtag('config', 'G-X8P0WJTQ79');
 	</script>
 
-    <link rel="stylesheet" href="css/reset.min.css">
+	<link rel="stylesheet" href="css/reset.min.css">
 	<style>
-	body {
-		padding: 32px;
-	}
-	h1 {
-		margin-bottom: 8px;
-	}
-	h2 {
-		margin-top: 32px;
-		margin-bottom: 16px;
-	}
-	p {
-		margin-bottom: 4px;
-	}
-	.radio-button {
-		margin-bottom: 8px;
-	}
-	#zoom-slider {
-		vertical-align: middle;
-	}
-	#save-button-container {
-		margin-bottom: 16px;
-	}
-	#image-canvas {
-		border: 1px solid gray;		
-	}
-	#save-button {
-		margin-top: 16px;
-	}
-	.notice-container {
-		margin-bottom: 16px;
-	}
+		body {
+			padding: 32px;
+		}
+
+		h1 {
+			margin-bottom: 8px;
+		}
+
+		h2 {
+			margin-top: 32px;
+			margin-bottom: 16px;
+		}
+
+		p {
+			margin-bottom: 4px;
+		}
+
+		.radio-button {
+			margin-bottom: 8px;
+		}
+å
+		#zoom-slider {
+			vertical-align: middle;
+		}
+
+		#save-button-container {
+			margin-bottom: 16px;
+		}
+
+		#image-canvas {
+			border: 1px solid gray;
+		}
+
+		#save-button {
+			margin-top: 16px;
+		}
+
+		.notice-container {
+			margin-bottom: 16px;
+		}
 	</style>
 </head>
+
 <body>
 	<h1>パスポート用の画像切り抜きツール</h1>
 	<p>パスポートのオンライン申請に必要となる固定サイズの画像を切り抜いて保存するツールです。</p>
@@ -66,7 +77,7 @@
 	<div id="set-image">
 		<h2>ステップ1. 画像を選択</h2>
 		<input type="file" id="image-input" accept="image/*" />
-	</div>	
+	</div>
 	<div id="select-size-container">
 		<h2>ステップ2. 切り抜くサイズを選択</h2>
 		<div class="radio-button">
@@ -77,7 +88,7 @@
 			<input type="radio" id="size-signature" name="size-template" value="284,788"></input>
 			<label for="size-signature">署名（横788px, 縦284px）</label>
 		</div>
-	</div>	
+	</div>
 	<div id="select-region-container">
 		<h2>ステップ3. 切り抜く領域を指定</h2>
 		<p>ドラッグで切り抜く領域を移動できます。</p>
@@ -87,7 +98,7 @@
 			<input type="range" id="zoom-slider" min="0.1" max="2.0" step="0.005" value="1" />
 			<label id="label-scale" for="zoom-slider"></label>
 		</div>
-		<br />	
+		<br />
 	</div>
 
 	<div>
@@ -101,7 +112,7 @@
 
 		<button id="save-button">画像を保存</button>
 		<br />
-	</div>	
+	</div>
 
 	<div class="notice-container">
 		<h2>注意</h2>
@@ -110,15 +121,18 @@
 		<ul>
 			<li>
 				Q 国内からオンライン申請する写真館等で撮影した写真データをアップロードしたいです。サイズなどの規定はありますか。 - 外務省 パスポート（旅券）よくあるお問い合わせ<br />
-				<a target="_blank" href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5">https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5</a>
+				<a target="_blank"
+					href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5">https://www.mofa.go.jp/mofaj/toko/passport/page24_002153.html#q5</a>
 			</li>
 			<li>
 				オンライン申請における自署画像の注意点 - 外務省 パスポート（旅券）パスポート（旅券）<br />
-				<a target="_blank" href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html">https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html</a>
+				<a target="_blank"
+					href="https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html">https://www.mofa.go.jp/mofaj/toko/passport/page24_002222.html</a>
 			</li>
 		</ul>
 		<p>
-			スマートフォン向けの<a target="_blank" href="https://services.digital.go.jp/mynaportal-app/">マイナポータルアプリ</a>には、写真や署名画像をカメラで撮影して切り抜きをガイドする機能があります。
+			スマートフォン向けの<a target="_blank"
+				href="https://services.digital.go.jp/mynaportal-app/">マイナポータルアプリ</a>には、写真や署名画像をカメラで撮影して切り抜きをガイドする機能があります。
 		</p>
 	</div>
 
@@ -133,4 +147,5 @@
 
 	<script src="./script.js"></script>
 </body>
+
 </html>
