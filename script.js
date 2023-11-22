@@ -137,7 +137,6 @@ window.onload = function () {
     zoomSlider.addEventListener('input', function () {
         scale = +zoomSlider.value;
         scaleLabel.innerText = Math.round(scale * 100) + "%";
-        console.log(scaleLabel.innerText);
         drawImage(ctx);
         recalculatePosition();
         drawSelectedArea(ctx);
