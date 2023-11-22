@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>パスポート用の画像切り抜きツール</title>
+</head>
+<body>
+	<h1>パスポート用の画像切り抜きツール</h1>
+	<p>パスポートのオンライン申請に必要となる固定サイズの画像を切り抜いて保存するツールです。</p>
+	<p>すべての処理は、お使いのコンピューター上で実行されます。ネットワークを通じて外部に送信されることはありません。</p>
+
+	<div>
+		<h2>ステップ1. 切り抜く画像を選択してください</h2>
+		<input type="file" id="image-input" accept="image/*" />
+		<br />
+	</div>	
+	<div>
+		<h2>ステップ2. 画像の目的（サイズ）を選択してください</h2>
+		<input type="radio" id="size-photo" name="size-template" value="730,600">顔写真（横600px, 縦730px）</input>
+		<input type="radio" id="size-signature" name="size-template" value="284,788">署名（横788px, 縦284px）</input>
+		<br />
+	</div>	
+	<div>
+		<h2>ステップ3. 画像を切り抜く領域を選択してください</h2>
+		<p> * スライダーを操作して画像を拡大縮小できます。</p>
+		<label for="zoom-slider">画像のズーム: </label>
+		<input type="range" id="zoom-slider" min="0.1" max="2.0" step="0.005" value="1" />
+		<br />	
+	</div>
+
+	<div>
+		<canvas id="image-canvas"></canvas>
+	</div>
+
+	<div>
+		<h2>ステップ4. 指定した範囲を保存してください</h2>
+		<button id="save-button">画像を保存</button>
+		<br />
+	</div>	
+
+	<hr />
+	<p>本ツールはオープンソースソフトウェアです。ソースコード等は、次のサイトから入手できます。</p>
+	<p>
+		<a href="https://github.com/keiji">https://github.com/keiji</a>
+	</p>
+
+	<script src="./script.js"></script>
+</body>
+</html>
